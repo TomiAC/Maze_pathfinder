@@ -1,0 +1,59 @@
+body{
+    background-image: url('landscape.jpg');
+    background-size: cover; /* Ajusta el tamaño de la imagen para cubrir toda la página */
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+.title {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    font-family: 'Courier New', Courier, monospace;
+    color: rgb(0, 0, 0);
+    font-size: 48px;
+    text-decoration: underline;
+}
+
+.maze{
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+
+.maze_HTMLtable{
+    text-align: center;
+    width: 36%;
+    border: 3px solid black;
+    border-collapse: collapse;
+}
+
+.buttons{
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    margin-top: 20px;
+}
+
+button{
+    background-color: #0476aa; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 12px;
+}
+
+td{
+    padding: 2%;
+    font-size: 30px;
+    font-family: system-ui;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    border: 1px solid black;
+    background-color: #4dbadb;
+}
