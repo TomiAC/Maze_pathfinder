@@ -9,7 +9,7 @@
     <link rel="icon" href="{% static 'maze_pathfinding/maze_icon.png' %}" type="image/png">
 </head>
 <body>
-    <h1 class="title">Maze Pathfinder</h1>
+    <h1 class="title">Maze Pathfinder: Search all paths</h1>
     <div class="maze">
         <table id='1' class="maze_HTMLtable">
             {% for rows in maze %}
@@ -29,8 +29,6 @@
     <script>
         const solution_js = {{ solution }}
         const roads_js = {{ roads }}
-        console.log(solution_js)
-        console.log(roads_js)
         
         function show_solution(){
             const length_road_js = roads_js.length

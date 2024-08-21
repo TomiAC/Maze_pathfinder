@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Maze Pathfinder</title>
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'maze_pathfinding/style.css' %}">
+        <link rel="icon" href="{% static 'maze_pathfinding/maze_icon.png' %}" type="image/png">
+    </head>
+    <body>
+        <h1 class="title">Maze Pathfinder: Search all paths</h1>
+        <div class="maze">
+            <table id='1' class="maze_HTMLtable">
+                {% for rows in maze %}
+                <tr>
+                    {% for cell in rows %}
+                    <td id="{{ forloop.parentloop.counter0 }}_{{ forloop.counter0 }}">
+                        {{ cell }}
+                    </td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <div class="buttons">
+            <button style="margin-left: 20px;" id='botonMostrarSolucion' onclick="show_solution()">Solve</button>
+        </div>
+    </body>
+    <script>
+        function show_solution(){
+            
+        }
+    </script>
+</html>

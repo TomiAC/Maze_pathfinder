@@ -4,10 +4,14 @@ from .utils import *
 
 
 # Create your views here.
-def index(request):
+def search_all(request):
     initial_celd = search_initial("O")
-    solution, roads = pathfinding()
+    solution, roads = solve_search_all()
     
     roads.remove(initial_celd)
     solution.remove(initial_celd)
-    return render(request, 'index.html', {'maze': maze, 'solution': solution, 'roads': roads})
+    return render(request, 'search_all.html', {'maze': maze, 'solution': solution, 'roads': roads})
+
+def dijkstra(request):
+    hola = solve_dijkstra()
+    return render(request, 'dijkstra.html', {'maze': maze})

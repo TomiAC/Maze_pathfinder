@@ -3,5 +3,6 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path("", views.index, name="index"),
+    path("search_all", views.search_all, name="search_all"),
+    path("dijkstra/", views.dijkstra, name="dijkstra")
 ]
