@@ -31,6 +31,7 @@ body{
 .maze_HTMLtable{
     border: 3px solid black;
     border-collapse: collapse;
+    display: flex;
 }
 
 .buttons{
@@ -44,7 +45,7 @@ button{
     background-color: #0476aa; /* Green */
     border: none;
     color: white;
-    padding: 15px 32px;
+    padding: 16px 32px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
@@ -53,13 +54,15 @@ button{
 }
 
 td{
-    padding: 2%;
+    padding: 12px;
     font-size: 15px;
     font-family: system-ui;
     width: 30px;
     height: 15px;
+    text-align: center;
     justify-content: center;
     align-content: center;
     border: 1px solid black;
     background-color: #4dbadb;
+    font-weight: bold;
 }

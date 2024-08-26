@@ -15,9 +15,26 @@
             {% for rows in maze %}
             <tr>
                 {% for cell in rows %}
-                <td id="{{ forloop.parentloop.counter0 }}_{{ forloop.counter0 }}">
-                    {{ cell }}
-                </td>
+                    {% if cell == '#' %}
+                    <td id="{{ forloop.parentloop.counter0 }}_{{ forloop.counter0 }}">
+                        &#x1F333;
+                    </td>
+                    {% endif %}
+                    {% if cell == 'O' %}
+                    <td id="{{ forloop.parentloop.counter0 }}_{{ forloop.counter0 }}">
+                        &#128512;
+                    </td>
+                    {% endif %}
+                    {% if cell == 'X' %}
+                    <td id="{{ forloop.parentloop.counter0 }}_{{ forloop.counter0 }}">
+                        &#x1F3C1;
+                    </td>
+                    {% endif %}
+                    {% if cell == ' ' %}
+                    <td id="{{ forloop.parentloop.counter0 }}_{{ forloop.counter0 }}">
+                        {{ cell }}
+                    </td>
+                    {% endif %}
                 {% endfor %}
             </tr>
             {% endfor %}
@@ -36,16 +53,16 @@
             for (const position of roads_js){
                 setTimeout(() => {
                     const cell = document.getElementById(position[0] + '_' + position[1])
-                    cell.innerHTML = " | "
-                }, counter * 200)
+                    cell.innerHTML = "&#x1F50E;"
+                }, counter * 150)
                 counter+=1
             }
             setTimeout(() => {
                 for(const position of solution_js){
                     const cell = document.getElementById(position[0] + '_' + position[1])
-                    cell.style.color = "red"
+                    cell.innerHTML = "&#x1F6B6;"
                 }
-            }, (length_road_js * 200)+200)
+            }, (length_road_js * 150)+150)
         }
     </script>
 </body>
