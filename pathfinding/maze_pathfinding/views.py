@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from .utils import *
+from .a_star import *
 
 
 # Create your views here.
@@ -20,6 +21,15 @@ def dijkstra(request):
     initial_celd = search_initial("O")
     solution, roads = shortest_path_dijkstra()
     solution.reverse()
+    solution.remove(initial_celd)
+    roads.remove(initial_celd)
+    return render(request, 'mazes.html', {'maze': maze, 'solution': solution, 'roads': roads, 'algorithm': algorithm, 'bd_template': bd_template})
+
+def a_star(request):
+    algorithm = 'A* Star'
+    bd_template = 'bd_template3'
+    initial_celd = search_initial("O")
+    solution, roads = shortest_path_a_star()
     solution.remove(initial_celd)
     roads.remove(initial_celd)
     return render(request, 'mazes.html', {'maze': maze, 'solution': solution, 'roads': roads, 'algorithm': algorithm, 'bd_template': bd_template})

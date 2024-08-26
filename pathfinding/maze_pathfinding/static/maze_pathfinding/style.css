@@ -9,7 +9,11 @@ body{
 }
 
 .bd_template2{
-    background-image: url('landscape_1.jpg');
+    background-image: url('landscape2.jpg');
+}
+
+.bd_template3{
+    background-image: url('landscape3.jpg');
 }
 
 .title {
