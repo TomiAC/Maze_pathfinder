@@ -1,8 +1,15 @@
 body{
-    background-image: url('landscape.jpg');
     background-size: cover; /* Ajusta el tamaño de la imagen para cubrir toda la página */
     background-repeat: no-repeat;
     background-position: center center;
+}
+
+.bd_template1{
+    background-image: url('landscape.jpg');
+}
+
+.bd_template2{
+    background-image: url('landscape_1.jpg');
 }
 
 .title {
@@ -22,8 +29,6 @@ body{
 }
 
 .maze_HTMLtable{
-    text-align: center;
-    width: 36%;
     border: 3px solid black;
     border-collapse: collapse;
 }
@@ -49,11 +54,12 @@ button{
 
 td{
     padding: 2%;
-    font-size: 30px;
+    font-size: 15px;
     font-family: system-ui;
     width: 30px;
-    height: 30px;
-    text-align: center;
+    height: 15px;
+    justify-content: center;
+    align-content: center;
     border: 1px solid black;
     background-color: #4dbadb;
 }
