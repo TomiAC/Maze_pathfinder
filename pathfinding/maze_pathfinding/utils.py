@@ -1,46 +1,48 @@
 from operator import attrgetter
+from .mazes import *
+import random
 
-maze = [
-    ["#", "O", "#", "#", "#", "#", "#", "#", "#", "#", "#", "#", "#", "#", "#", "#", "#", "#", "#", "#", "#", "#"],
-    ["#", " ", " ", " ", " ", " ", " ", " ", "#", " ", "#", "#", " ", " ", "#", "#", " ", " ", " ", " ", " ", "#"],
-    ["#", "#", "#", "#", " ", "#", "#", " ", " ", " ", " ", "#", "#", " ", "#", " ", " ", "#", " ", "#", " ", "#"],
-    ["#", " ", " ", " ", " ", " ", "#", "#", " ", "#", " ", " ", " ", " ", "#", " ", " ", " ", " ", "#", " ", "#"],
-    ["#", "#", "#", " ", "#", " ", "#", " ", " ", "#", " ", "#", "#", "#", "#", "#", "#", "#", " ", "#", " ", "#"],
-    ["#", " ", " ", " ", "#", " ", "#", " ", "#", "#", " ", "#", "#", " ", "#", "#", " ", " ", " ", "#", " ", "#"],
-    ["#", "#", "#", "#", "#", "#", "#", " ", " ", "#", "#", "#", "#", " ", "#", "#", "#", " ", "#", "#", "#", "#"],
-    ["#", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "#"],
-    ["#", " ", "#", " ", "#", "#", "#", "#", "#", " ", "#", " ", "#", " ", " ", " ", "#", " ", " ", " ", " ", "#"],
-    ["#", " ", "#", " ", "#", " ", " ", " ", "#", " ", "#", "#", "#", " ", "#", "#", "#", "#", " ", "#", " ", "#"],
-    ["#", " ", "#", "#", "#", "#", "#", " ", "#", " ", " ", "#", " ", "#", "#", " ", "#", " ", " ", "#", " ", "#"],
-    ["#", " ", "#", " ", "#", " ", "#", " ", "#", " ", " ", "#", " ", " ", "#", " ", " ", " ", "#", "#", " ", "#"],
-    ["#", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "#", " ", " ", "#", " ", "#"],
-    ["#", "#", "#", "#", "#", "#", "#", "#", "X", "#", "#", "#", "#", "#", "#", "#", "#", "#", "#", "#", "#", "#"]
-]
-
-class Cell:#
-
-    def __init__(self, row, column, distance=float("inf")):
-        self.row = row
-        self.column = column
-        self.distance = distance
-        self.parent = None
+#Just a random choose of what maze is going to be shown
+choosen_maze = random.randint(1,4)
+if(choosen_maze==1):
+    maze = maze1
+elif choosen_maze ==2:
+    maze = maze2
+elif choosen_maze==3:
+    maze = maze3
+elif choosen_maze==4:
+    maze = maze4
 
 
-def search_initial(initial_symbol):
+def search_cell_coords_by_symbol(symbol:str) -> list[int]:
+    '''
+    Search the file and column of the cell that contains the symbol passed as argument.
+
+    Parameters:
+        symbol (str): The symbol which is going to be looked for in the maze.
+
+    Returns:
+        cell (list(int)): Return a list of 2 positions, the first one is the file the second one is the column
+
+    '''
     for row in range(len(maze)):
         for column in range(len(maze[row])):
-            if(maze[row][column]==initial_symbol):
-                cel = [row, column]
-                return cel
+            if(maze[row][column]==symbol):
+                cell = [row, column]
+                return cell
             
 
-def search_final(visited):
-    for cell in visited:
-        if(maze[cell.row][cell.column] == 'X'):
-            return cell
-
-
 def get_neighbours(row, column):
+    '''
+    Returns a list of all available neighbours of the cell in the row and column passed.
+
+    Parameters:
+        row (int): The row of the cell.
+        column (int): The column of the cell.
+    
+    Returns:
+        neighbours (list(list(int))): Returns a list with a list for every pair of file, column of every available neighbour.
+    '''
     neighbours = []
     if(row>0):
         if((maze[row-1][column]!="#") and (maze[row-1][column]!="O")):
@@ -58,9 +60,16 @@ def get_neighbours(row, column):
 
 
 def solve_search_all():
+    '''
+    Finds the path to the finish cell by looking all the posible roads.
+
+    Returns
+        path list(list(int)): A list of the cells that form the path from the beginning to the finish.
+        roads list(list(int)): A list of all the cells that where considered during the process.
+    '''
     visited = []
     roads = []
-    start_position = search_initial("O")
+    start_position = search_cell_coords_by_symbol("O")
     queue = []
     queue.append([start_position, [start_position]])
     visited.append(start_position)
@@ -79,66 +88,3 @@ def solve_search_all():
                 new_path = path + [neighbour]                
                 queue.append([neighbour, new_path])
                 visited.append(neighbour)
-
-
-def shortest_path(cell):
-    solution = []
-    aux = cell.parent
-    while(aux is not None):
-        solution.append([aux.row, aux.column])
-        aux = aux.parent
-    return solution
-
-def get_roads(visited):
-    roads_aux = sorted(visited, key=lambda cell: cell.distance)
-    roads = []
-    for cell in roads_aux:
-        if(maze[cell.row][cell.column]!='X'):
-            roads.append([cell.row, cell.column])
-    return roads
-
-
-def solve_dijkstra():
-    visited = set()
-    star_position = search_initial("O")
-    first_cell = Cell(star_position[0], star_position[1], distance=0)
-
-    list_of_cells = []
-    list_of_cells.append(first_cell)
-
-    for row in range(len(maze)):
-        for column in range(len(maze[row])):
-            if((maze[row][column]!="#") & (maze[row][column]!="O")):
-                list_of_cells.append(Cell(row, column))
-    
-    visited.add(first_cell)
-
-    while(list_of_cells!=[]):
-        cell = list_of_cells.pop(list_of_cells.index(min(list_of_cells, key=attrgetter('distance'))))
-        neighbours = get_neighbours(cell.row, cell.column)
-
-        for neighbour in neighbours:
-            for aux_neighbour in list_of_cells:
-                if(aux_neighbour.row==neighbour[0] and aux_neighbour.column==neighbour[1]):
-                    current_neighbour = aux_neighbour
-            
-            if(maze[current_neighbour.row][current_neighbour.column]=='X'):
-                current_distance = cell.distance + 1
-                visited.add(current_neighbour)
-                list_of_cells[list_of_cells.index(current_neighbour)].distance = current_distance
-                list_of_cells[list_of_cells.index(current_neighbour)].parent = cell
-                return visited
-
-            if(current_neighbour not in visited):
-                current_distance = cell.distance + 1
-                if(current_neighbour.distance > current_distance):
-                    visited.add(current_neighbour)
-                    list_of_cells[list_of_cells.index(current_neighbour)].distance = current_distance
-                    list_of_cells[list_of_cells.index(current_neighbour)].parent = cell
-    return 0
-    
-def shortest_path_dijkstra():
-    visited = solve_dijkstra()
-    shortest_path_var = shortest_path(search_final(visited))
-    roads = get_roads(visited)
-    return shortest_path_var, roads

@@ -1,8 +1,19 @@
-from .utils import search_initial, search_final, get_neighbours, shortest_path, get_roads, maze
+from .utils import search_cell_coords_by_symbol, get_neighbours, maze
+from .dijkstra import search_final, shortest_path
 from operator import attrgetter
-import time
 
 class Cell_A_Star:
+    '''
+    Cell class for the Dijkstra algorithm
+
+    Attributes:
+        row (int): Row of the cell in the maze.
+        column (int): Column og the cell in the maze.
+        f (int): f = g + h.
+        g (int): The distance from the beginning to this cell.
+        h (int): The direct distance from this cell to the finish.
+        parent (Cell): The previous cell.
+    '''
 
     def __init__(self, row, column, h):
         self.row = row
@@ -13,22 +24,63 @@ class Cell_A_Star:
         self.parent = None
 
 def calc_h(row_cell, column_cell, row_final, column_final):
+    '''
+    Calculate the direct distance from the cell to the finish.
+    
+    Parameters
+        row_cell (int): The row of the cell.
+        column_cell (int): The column of the cell.
+        row_final (int): The row of the finish.
+        column_final (int): The column of the finish.
+    
+    Returns
+        _ (int): The direct distance from the cell to the finish.
+    '''
     return (abs(row_cell - row_final)+abs(column_cell-column_final))
 
-def search_final_a_star(final_symbol):
-    for row in range(len(maze)):
-        for column in range(len(maze[row])):
-            if(maze[row][column]==final_symbol):
-                cel = [row, column]
-                return cel
+def get_roads_a_star(a_star_solved):
+    '''
+    Get a list of the pair file, column of the cells that are in the analised roads.
+
+    Parameters
+        a_star_solved list(Cell_A_Star): The list of all the visited cells.
+    
+    Returns
+        roads list(list(int)): A list of the file and column of the cells.
+    '''
+    roads_aux = sorted(a_star_solved, key=lambda cell: cell.g)
+    roads = []
+    for cell in roads_aux:
+        if(maze[cell.row][cell.column]!='X'):
+            roads.append([cell.row, cell.column])
+    return roads
+
+def shortest_path_a_star():
+    '''
+    Make a list of the pair file, column of the shortest path and the cells visited to be presented in the HTML Table.
+
+    Returns
+        shortest_path_for_a_star list(list(int)): A list of the cells that form the path from the beginning to the finish.
+        roads list(list(int)): A list of all the cells that where considered during the process.
+    '''
+    a_star_solved = a_star_solve()
+    shortest_path_for_a_star = shortest_path(search_final(a_star_solved))
+    roads = get_roads_a_star(a_star_solved)
+    return shortest_path_for_a_star, roads
 
 def a_star_solve():
+    '''
+    Find the shortest past in the maze using the A* Star algorithm.
+
+    Returns
+        closed_list list(Cell_A_Star): List of all the visited cells or 0 if not path was found.
+    '''
     lista_abiertos = []
     lista_cerrados = []
     list_of_cells = []
 
-    start_position = search_initial("O")
-    final_position = search_final_a_star("X")
+    start_position = search_cell_coords_by_symbol("O")
+    final_position = search_cell_coords_by_symbol("X")
 
     first_cell = Cell_A_Star(start_position[0], start_position[1], calc_h(start_position[0],start_position[1],final_position[0],final_position[1]))
     lista_abiertos.append(first_cell)
@@ -68,20 +120,6 @@ def a_star_solve():
                     current_neighbour.f = temp_distance + current_neighbour.h
                     current_neighbour.parent = cell
     return 0
-
-def get_roads_a_star(a_star_solved):
-    roads_aux = sorted(a_star_solved, key=lambda cell: cell.g)
-    roads = []
-    for cell in roads_aux:
-        if(maze[cell.row][cell.column]!='X'):
-            roads.append([cell.row, cell.column])
-    return roads
-
-def shortest_path_a_star():
-    a_star_solved = a_star_solve()
-    shortest_path_for_a_star = shortest_path(search_final(a_star_solved))
-    roads = get_roads_a_star(a_star_solved)
-    return shortest_path_for_a_star, roads
 
 
 
