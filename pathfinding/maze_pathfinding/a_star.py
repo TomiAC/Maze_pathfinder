@@ -15,11 +15,11 @@ class Cell_A_Star:
         parent (Cell): The previous cell.
     '''
 
-    def __init__(self, row, column, h):
+    def __init__(self, row, column, h, g=float("inf")):
         self.row = row
         self.column = column
-        self.f = float("inf")
-        self.g = float("inf")
+        self.f = g + h
+        self.g = g
         self.h = h
         self.parent = None
 
@@ -75,15 +75,15 @@ def a_star_solve():
     Returns
         closed_list list(Cell_A_Star): List of all the visited cells or 0 if not path was found.
     '''
-    lista_abiertos = []
-    lista_cerrados = []
+    open_list = []
+    closed_list = []
     list_of_cells = []
 
     start_position = search_cell_coords_by_symbol("O")
     final_position = search_cell_coords_by_symbol("X")
 
-    first_cell = Cell_A_Star(start_position[0], start_position[1], calc_h(start_position[0],start_position[1],final_position[0],final_position[1]))
-    lista_abiertos.append(first_cell)
+    first_cell = Cell_A_Star(start_position[0], start_position[1], calc_h(start_position[0],start_position[1],final_position[0],final_position[1]), g=0)
+    open_list.append(first_cell)
     list_of_cells.append(first_cell)
 
     for row in range(len(maze)):
@@ -91,15 +91,17 @@ def a_star_solve():
             if((maze[row][column]!="#") & (maze[row][column]!="O")):
                 list_of_cells.append(Cell_A_Star(row, column, calc_h(row, column,final_position[0],final_position[1])))
 
-    while(lista_abiertos!=[]):
-        cell = lista_abiertos.pop(lista_abiertos.index(min(lista_abiertos, key=attrgetter('f'))))
+    while(open_list!=[]):
+        cell = open_list.pop(open_list.index(min(open_list, key=attrgetter('f'))))
         neighbours = get_neighbours(cell.row, cell.column)
-        lista_cerrados.append(cell)
-        print(f'Fila: {cell.row}, Columna: {cell.column}, Parent: {cell.parent}')
+        if(cell.parent is not None):
+            cell.g = cell.parent.g + 1
+            cell.f = cell.g + cell.h
+        closed_list.append(cell)
         
 
         if(cell.row==final_position[0] and cell.column==final_position[1]):
-            return lista_cerrados
+            return closed_list
 
         for neighbour in neighbours:
 
@@ -107,13 +109,13 @@ def a_star_solve():
                 if(aux_neighbour.row==neighbour[0] and aux_neighbour.column==neighbour[1]):
                     current_neighbour = aux_neighbour
 
-            if(current_neighbour not in lista_abiertos and current_neighbour not in lista_cerrados):
+            if(current_neighbour not in open_list and current_neighbour not in closed_list):
                 current_neighbour.g = cell.g + 1
                 current_neighbour.f = current_neighbour.g + current_neighbour.h
                 current_neighbour.parent = cell
-                lista_abiertos.append(current_neighbour)
+                open_list.append(current_neighbour)
             
-            if(current_neighbour in lista_abiertos and current_neighbour not in lista_cerrados):
+            if(current_neighbour in open_list and current_neighbour not in closed_list):
                 temp_distance = cell.g + 1
                 if(temp_distance<current_neighbour.g):
                     current_neighbour.g = temp_distance

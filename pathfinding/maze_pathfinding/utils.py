@@ -4,15 +4,15 @@ import random
 
 #Just a random choose of what maze is going to be shown
 choosen_maze = random.randint(1,4)
+print(choosen_maze)
 if(choosen_maze==1):
-    maze = maze1
+    maze = maze_1
 elif choosen_maze ==2:
-    maze = maze2
+    maze = maze_2
 elif choosen_maze==3:
-    maze = maze3
+    maze = maze_3
 elif choosen_maze==4:
-    maze = maze4
-
+    maze = maze_4
 
 def search_cell_coords_by_symbol(symbol:str) -> list[int]:
     '''
