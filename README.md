@@ -23,5 +23,6 @@ The 4 used algorithms are:
 ![image](https://github.com/user-attachments/assets/ae62a7cd-0ddc-4710-a9fa-b39a8a163136)
 ![image](https://github.com/user-attachments/assets/2822bd3b-3556-424b-b028-617ca3dca60c)
 
-
+# Contact
+  www.linkedin.com/in/ta-cardozo
   
