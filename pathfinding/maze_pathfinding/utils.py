@@ -1,20 +1,11 @@
 from operator import attrgetter
 from .mazes import *
-import random
+
 
 #Just a random choose of what maze is going to be shown
-choosen_maze = random.randint(1,4)
-print(choosen_maze)
-if(choosen_maze==1):
-    maze = maze_1
-elif choosen_maze ==2:
-    maze = maze_2
-elif choosen_maze==3:
-    maze = maze_3
-elif choosen_maze==4:
-    maze = maze_4
 
-def search_cell_coords_by_symbol(symbol:str) -> list[int]:
+
+def search_cell_coords_by_symbol(symbol:str, maze:list) -> list[int]:
     '''
     Search the file and column of the cell that contains the symbol passed as argument.
 
@@ -32,7 +23,7 @@ def search_cell_coords_by_symbol(symbol:str) -> list[int]:
                 return cell
             
 
-def get_neighbours(row, column):
+def get_neighbours(row, column, maze):
     '''
     Returns a list of all available neighbours of the cell in the row and column passed.
 
@@ -58,33 +49,36 @@ def get_neighbours(row, column):
            neighbours.append([row, column+1])
     return neighbours
 
-
-def solve_search_all():
+def search_final(visited, maze):
     '''
-    Finds the path to the finish cell by looking all the posible roads.
+    Returns the final cell of the list of visited.
 
-    Returns
-        path list(list(int)): A list of the cells that form the path from the beginning to the finish.
-        roads list(list(int)): A list of all the cells that where considered during the process.
+    Parameters:
+        visited (list(Cell)): List of visited cells.
+
+    Returns:
+        cell (Cell): The final cell of the visited list.
+
     '''
-    visited = []
-    roads = []
-    start_position = search_cell_coords_by_symbol("O")
-    queue = []
-    queue.append([start_position, [start_position]])
-    visited.append(start_position)
-    roads.append(start_position)
+    for cell in visited:
+        if(maze[cell.row][cell.column] == 'X'):
+            return cell
+        
+
+def shortest_path(cell):
+    '''
+    Get a list of the pair file, column of the cells that are in the path to the finish.
+
+    Parameters
+        cell Cell: The final cell.
     
-    while(queue!=[]):
-        cell, path = queue.pop(0)
-        neighbours = get_neighbours(cell[0], cell[1])
+    Returns
+        solution list(list(int)): A list of the file and column of the cells.
 
-        for neighbour in neighbours:
-            if(maze[neighbour[0]][neighbour[1]]=="X"):
-                return path, roads
-
-            if(neighbour not in visited):
-                roads.append(neighbour)
-                new_path = path + [neighbour]                
-                queue.append([neighbour, new_path])
-                visited.append(neighbour)
+    '''
+    solution = []
+    aux = cell.parent
+    while(aux is not None):
+        solution.append([aux.row, aux.column])
+        aux = aux.parent
+    return solution

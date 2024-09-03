@@ -41,13 +41,16 @@
         </table>
     </div>
     <div class="buttons">
-        <button style="margin-left: 20px;" id='botonMostrarSolucion' onclick="show_solution()">Solve</button>
+        <button id='return-button' onclick="window.location.href='/maze_pathfinding/'">Return to Index</button>
+        <button id='botonMostrarSolucion' onclick="show_solution()">Solve</button>
+        <button onclick="window.location.href='{{ url_vista }}'">Refresh</button>
     </div>
     <script>
         const solution_js = {{ solution }}
         const roads_js = {{ roads }}
         
         function show_solution(){
+            document.getElementById('botonMostrarSolucion').disabled = true
             const length_road_js = roads_js.length
             let counter = 0
             for (const position of roads_js){

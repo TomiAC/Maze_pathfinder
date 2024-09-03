@@ -1,4 +1,4 @@
-from .utils import search_cell_coords_by_symbol, get_neighbours, maze
+from .utils import search_cell_coords_by_symbol, get_neighbours
 from .dijkstra import search_final, shortest_path
 from operator import attrgetter
 
@@ -38,7 +38,7 @@ def calc_h(row_cell, column_cell, row_final, column_final):
     '''
     return (abs(row_cell - row_final)+abs(column_cell-column_final))
 
-def get_roads_a_star(a_star_solved):
+def get_roads_a_star(a_star_solved, maze):
     '''
     Get a list of the pair file, column of the cells that are in the analised roads.
 
@@ -55,7 +55,7 @@ def get_roads_a_star(a_star_solved):
             roads.append([cell.row, cell.column])
     return roads
 
-def shortest_path_a_star():
+def shortest_path_a_star(maze):
     '''
     Make a list of the pair file, column of the shortest path and the cells visited to be presented in the HTML Table.
 
@@ -63,12 +63,12 @@ def shortest_path_a_star():
         shortest_path_for_a_star list(list(int)): A list of the cells that form the path from the beginning to the finish.
         roads list(list(int)): A list of all the cells that where considered during the process.
     '''
-    a_star_solved = a_star_solve()
-    shortest_path_for_a_star = shortest_path(search_final(a_star_solved))
-    roads = get_roads_a_star(a_star_solved)
+    a_star_solved = a_star_solve(maze)
+    shortest_path_for_a_star = shortest_path(search_final(a_star_solved, maze))
+    roads = get_roads_a_star(a_star_solved, maze)
     return shortest_path_for_a_star, roads
 
-def a_star_solve():
+def a_star_solve(maze):
     '''
     Find the shortest past in the maze using the A* Star algorithm.
 
@@ -79,8 +79,8 @@ def a_star_solve():
     closed_list = []
     list_of_cells = []
 
-    start_position = search_cell_coords_by_symbol("O")
-    final_position = search_cell_coords_by_symbol("X")
+    start_position = search_cell_coords_by_symbol("O", maze)
+    final_position = search_cell_coords_by_symbol("X", maze)
 
     first_cell = Cell_A_Star(start_position[0], start_position[1], calc_h(start_position[0],start_position[1],final_position[0],final_position[1]), g=0)
     open_list.append(first_cell)
@@ -93,13 +93,12 @@ def a_star_solve():
 
     while(open_list!=[]):
         cell = open_list.pop(open_list.index(min(open_list, key=attrgetter('f'))))
-        neighbours = get_neighbours(cell.row, cell.column)
+        neighbours = get_neighbours(cell.row, cell.column, maze)
         if(cell.parent is not None):
             cell.g = cell.parent.g + 1
             cell.f = cell.g + cell.h
         closed_list.append(cell)
         
-
         if(cell.row==final_position[0] and cell.column==final_position[1]):
             return closed_list
 

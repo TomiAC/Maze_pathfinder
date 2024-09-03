@@ -18,43 +18,7 @@ class Cell:
         self.distance = distance
         self.parent = None
 
-
-def search_final(visited:list[Cell]):
-    '''
-    Returns the final cell of the list of visited.
-
-    Parameters:
-        visited (list(Cell)): List of visited cells.
-
-    Returns:
-        cell (Cell): The final cell of the visited list.
-
-    '''
-    for cell in visited:
-        if(maze[cell.row][cell.column] == 'X'):
-            return cell
-        
-
-def shortest_path(cell):
-    '''
-    Get a list of the pair file, column of the cells that are in the path to the finish.
-
-    Parameters
-        cell Cell: The final cell.
-    
-    Returns
-        solution list(list(int)): A list of the file and column of the cells.
-
-    '''
-    solution = []
-    aux = cell.parent
-    while(aux is not None):
-        solution.append([aux.row, aux.column])
-        aux = aux.parent
-    return solution
-
-
-def get_roads(visited):
+def get_roads(visited, maze):
     '''
     Get a list of the pair file, column of the cells that are in the analised roads.
 
@@ -72,7 +36,7 @@ def get_roads(visited):
     return roads
 
     
-def shortest_path_dijkstra():
+def shortest_path_dijkstra(maze):
     '''
     Make a list of the pair file, column of the shortest path and the cells visited to be presented in the HTML Table.
 
@@ -80,13 +44,13 @@ def shortest_path_dijkstra():
         shortest_path_dij list(list(int)): A list of the cells that form the path from the beginning to the finish.
         roads list(list(int)): A list of all the cells that where considered during the process.
     '''
-    visited = solve_dijkstra()
-    shortest_path_dij = shortest_path(search_final(visited))
-    roads = get_roads(visited)
+    visited = solve_dijkstra(maze)
+    shortest_path_dij = shortest_path(search_final(visited, maze))
+    roads = get_roads(visited, maze)
     return shortest_path_dij, roads
 
 
-def solve_dijkstra():
+def solve_dijkstra(maze):
     '''
     Find the shortest past in the maze using the Djikstra algorithm.
 
@@ -94,7 +58,7 @@ def solve_dijkstra():
         visited list(Cell): List of all the visited cells or 0 if not path was found.
     '''
     visited = set()
-    star_position = search_cell_coords_by_symbol("O")
+    star_position = search_cell_coords_by_symbol("O", maze)
     first_cell = Cell(star_position[0], star_position[1], distance=0)
 
     list_of_cells = []
@@ -109,7 +73,7 @@ def solve_dijkstra():
 
     while(list_of_cells!=[]):
         cell = list_of_cells.pop(list_of_cells.index(min(list_of_cells, key=attrgetter('distance'))))
-        neighbours = get_neighbours(cell.row, cell.column)
+        neighbours = get_neighbours(cell.row, cell.column, maze)
 
         for neighbour in neighbours:
             for aux_neighbour in list_of_cells:

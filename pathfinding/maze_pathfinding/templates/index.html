@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maze Pathfinder</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'maze_pathfinding/style_index.css' %}">
+    <link rel="icon" href="{% static 'maze_pathfinding/maze_icon.png' %}" type="image/png">
+</head>
+<body>
+
+    <h1>Maze Pathfinder</h1>
+    
+    <p>
+        The website is an interactive platform designed to test and visualize the functioning of different search algorithms applied to maze solving. The available algorithms include A* (A star), Dijkstra, Breadth-First Search (BFS), and Depth-First Search (DFS).
+    </p>
+    <h3>
+        Things to keep in mind
+    </h3>
+    <ul>
+        <li>&#128512; is the Start</li>
+        <li>&#x1F3C1; is the Finish</li>
+        <li>&#x1F333; are prohibited cells</li>
+        <li>&#x1F50E; are paths followed</li>
+        <li>&#x1F6B6; are the cells that make the path to the finish</li>
+    </ul>
+    <div class="button-container">
+        <button onclick="window.location.href='a_star'">A* (A Star)</button>
+        <button onclick="window.location.href='dijkstra'">Dijkstra</button>
+        <button onclick="window.location.href='bfs'">Breadth-First Search (BFS)</button>
+        <button onclick="window.location.href='dfs'">Depth-First Search (DFS)</button>
+    </div>
+</body>
+</html>

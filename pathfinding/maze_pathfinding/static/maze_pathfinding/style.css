@@ -16,6 +16,10 @@ body{
     background-image: url('landscape3.jpg');
 }
 
+.bd_template4{
+    background-image: url('landscape4.jpg');
+}
+
 .title {
     display: flex;
     justify-content: center;
@@ -43,6 +47,7 @@ body{
     justify-content: center;
     align-content: center;
     margin-top: 20px;
+    gap: 40px;
 }
 
 button{
@@ -51,10 +56,23 @@ button{
     color: white;
     padding: 16px 32px;
     text-align: center;
+    cursor: pointer;
     text-decoration: none;
     display: inline-block;
     font-size: 16px;
     border-radius: 12px;
+}
+
+button:hover{
+    background-color: #1b3bcc;
+}
+
+#return-button{
+    background-color: rgb(211, 108, 108);
+}
+
+#return-button:hover{
+    background-color: rgb(236, 50, 50);
 }
 
 td{
